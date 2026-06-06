@@ -1,0 +1,25 @@
+Package: fitAQ
+Title: Fitting Light Response Curves for Photosynthesis
+Version: 0.0.0.9000
+Authors@R:
+    person("Jiedong", "Zhu", , "zhujiedong@yeah.net", role = c("aut", "cre"))
+Description: Provides functions to fit four common light response models
+    (rectangular hyperbola, non-rectangular hyperbola, exponential, and
+    modified rectangular hyperbola) using differential evolution optimization
+    (DEoptim). Calculates key physiological parameters such as light compensation
+    point (LCP), light saturation point (LSP), maximum net photosynthetic rate
+    (Pmax), apparent quantum yield (AQY), and dark respiration (Rd). Includes
+    plotting methods and helper functions for extracting results.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Imports:
+    DEoptim,
+    graphics,
+    stats
+Suggests:
+    tinyplot,
+    RColorBrewer
+URL: https://github.com/yourusername/fitAQ (optional)
+BugReports: https://github.com/yourusername/fitAQ/issues (optional)
