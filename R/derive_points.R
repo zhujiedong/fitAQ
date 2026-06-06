@@ -1,4 +1,5 @@
 # Internal function to compute LCP, LSP, and Pmax from fitted parameters
+#' @importFrom stats uniroot
 derive_light_points <- function(model, par, Q, A, sat_frac) {
   switch(
     model,

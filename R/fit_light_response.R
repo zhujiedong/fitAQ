@@ -23,6 +23,7 @@
 #' plot(res)
 #' light_points(res)
 #' }
+#' @importFrom stats lm coef
 fit_light_response <- function(data,
                                Qin,
                                A,
@@ -31,8 +32,8 @@ fit_light_response <- function(data,
                                sat_frac = 0.9,
                                lower = NULL,
                                upper = NULL,
-                               control = list(),
-                               ...) {
+                               control = list(trace = FALSE),   # 修改这里
+                               ...){
   model <- match.arg(model)
 
   # Extract numeric vectors

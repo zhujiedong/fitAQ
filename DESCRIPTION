@@ -21,5 +21,3 @@ Imports:
 Suggests:
     tinyplot,
     RColorBrewer
-URL: https://github.com/yourusername/fitAQ (optional)
-BugReports: https://github.com/yourusername/fitAQ/issues (optional)

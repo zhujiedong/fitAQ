@@ -22,6 +22,7 @@
 #' res <- low_light_coefs(df, "Qin", "A", n = 5)
 #' print(res$AQY)
 #' }
+#' @importFrom stats lm coef
 low_light_coefs <- function(data, Qin, A, n = 5, min_points = 3) {
   # Extract and clean
   Q <- data[[Qin]]
