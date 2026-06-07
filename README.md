@@ -265,10 +265,13 @@ MIT © Jiedong Zhu
 
 Baly, EC. 1935. 《The kinetics of photosynthesis》. Proceedings of the
 Royal Society of London Series B (Biological Sciences), 期 117: 218–39.
+
 Thornley, J H M. 1976. 《Mathematical models in plant physiology》.
 London: Academic Press. Prado, C. H., 和 J. A. P. V. De Moraes. 1997.
+
 《Photosynthetic capacity and specific leaf mass in twenty woody species
 of Cerrado vegetation under field conditions》. Photosynthetica 33 (1):
+
 103–12. ZiPiao, YE. 2010. 《A review on modeling of responses of
 photosynthesis to light and CO2CO2​》. Chinese Journal of Plant Ecology,
 期 06.

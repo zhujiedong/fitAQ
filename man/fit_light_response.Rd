@@ -6,10 +6,11 @@
 \usage{
 fit_light_response(
   data,
-  Qin,
-  A,
+  Qin = NULL,
+  A = NULL,
   model = c("rectangular", "nonrectangular", "exponential", "modified"),
   sat_frac = 0.9,
+  type = c("LI-6800", "LI-6400", "other"),
   lower = NULL,
   upper = NULL,
   control = list(trace = FALSE),
@@ -19,31 +20,27 @@ fit_light_response(
 \arguments{
 \item{data}{A data frame.}
 
-\item{Qin}{Name or index of PPFD column.}
+\item{Qin}{Name or index of PPFD column. If \code{NULL} and \code{type} is specified,
+a default will be used.}
 
-\item{A}{Name or index of net photosynthesis column.}
+\item{A}{Name or index of net photosynthesis column. If \code{NULL} and \code{type} is specified,
+a default will be used.}
 
-\item{model}{Model type: "rectangular", "nonrectangular", "exponential", "modified".}
+\item{model}{Model type.}
 
-\item{sat_frac}{Fraction of Pmax to define saturation point (default 0.9).}
+\item{sat_frac}{Fraction of Pmax for LSP.}
 
-\item{lower, upper}{Optional named vectors of parameter bounds.}
+\item{type}{Instrument type: \code{"LI-6800"}, \code{"LI-6400"}, or \code{"other"}.
+If \code{"LI-6800"}, defaults: \code{Qin = "Qin"}, \code{A = "A"}.
+If \code{"LI-6400"}, defaults: \code{Qin = "PARi"}, \code{A = "Photo"}.
+If \code{"other"}, user must provide \code{Qin} and \code{A}.}
 
-\item{control}{List passed to \code{DEoptim.control}.}
+\item{lower, upper}{Optional bounds.}
 
-\item{...}{Additional arguments to \code{DEoptim}.}
-}
-\value{
-An object of class \code{light_response_fit}.
+\item{control}{List for DEoptim.}
+
+\item{...}{Additional arguments.}
 }
 \description{
-Fits one of four light response models using Differential Evolution optimization.
-}
-\examples{
-\dontrun{
-res <- fit_light_response(mydata, Qin = "PAR", A = "Photo", model = "exponential")
-print(res)
-plot(res)
-light_points(res)
-}
+Fit light response curves using DEoptim
 }

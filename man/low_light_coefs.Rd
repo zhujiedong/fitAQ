@@ -4,34 +4,31 @@
 \alias{low_light_coefs}
 \title{Linear regression on low-light points to estimate AQY and Rd}
 \usage{
-low_light_coefs(data, Qin, A, n = 5, min_points = 3)
+low_light_coefs(
+  data,
+  Qin = NULL,
+  A = NULL,
+  n = 5,
+  type = c("LI-6800", "LI-6400", "other"),
+  min_points = 3
+)
 }
 \arguments{
-\item{data}{Data frame containing the columns.}
+\item{data}{Data frame.}
 
-\item{Qin}{Name or index of light intensity column.}
+\item{Qin}{Name of light intensity column (optional if type given).}
 
-\item{A}{Name or index of net photosynthesis column.}
+\item{A}{Name of photosynthesis column (optional if type given).}
 
-\item{n}{Number of lowest-light points to use (default 5).}
+\item{n}{Number of lowest-light points (default 5).}
 
-\item{min_points}{Minimum number of points required; if fewer, returns NA.}
+\item{type}{Instrument type: "LI-6800", "LI-6400", or "other". Default "LI-6800".}
+
+\item{min_points}{Minimum points required.}
 }
 \value{
-A list with elements:
-\item{AQY}{Apparent quantum yield (slope of regression).}
-\item{Rd}{Dark respiration (positive value, = -intercept).}
-\item{intercept}{Raw intercept.}
-\item{n_used}{Actual number of points used.}
-\item{r_squared}{R-squared of the fit.}
+List with AQY, Rd, intercept, n_used, r_squared.
 }
 \description{
-Sorts data by light intensity (Qin), takes the first \code{n} points,
-fits A ~ Qin, and returns the slope (AQY) and dark respiration (Rd = -intercept).
-}
-\examples{
-\dontrun{
-res <- low_light_coefs(df, "Qin", "A", n = 5)
-print(res$AQY)
-}
+Linear regression on low-light points to estimate AQY and Rd
 }

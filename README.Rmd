@@ -1,4 +1,12 @@
----
+e_readme_rmd()
+library(devtools)
+library(usethis)
+devtools::load_all()
+testit::test_pkg("fitAQ")
+
+use_readme_rmd()
+--
+title: "fitAQ -- an R package for light response curve fit"
 output: github_document
 ---
 
@@ -18,80 +26,37 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The **fitAQ** package fits four light response models using differential evolution (`DEoptim`).
-Models: rectangular hyperbola, non‑rectangular hyperbola, exponential, modified rectangular hyperbola.
-
-Key outputs: LCP, LSP, Pmax, AQY, Rd.
+The goal of fitAQ is to ...
 
 ## Installation
 
-```r
-# install.packages("devtools")
-devtools::install_github("yourusername/fitAQ")
+You can install the development version of fitAQ like so:
+
+``` r
+# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
 ```
 
-## Example with `dat-aq-wait30.csv`
+## Example
 
-```{r}
+This is a basic example which shows you how to solve a common problem:
+
+```{r example}
 library(fitAQ)
-
-# Path to example data
-f <- system.file("extdata", "dat-aq-wait30.csv", package = "fitAQ")
-df <- read.csv(f)
-
-head(df)
+## basic example code
 ```
 
-Fit exponential model:
+What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
 
-```{r}
-fit_exp <- fit_light_response(df, Qin = "Qin", A = "A", model = "exponential")
-print(fit_exp)
+```{r cars}
+summary(cars)
 ```
 
-Extract parameters:
+You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
 
-```{r}
-light_points(fit_exp)
+You can also embed plots, for example:
+
+```{r pressure, echo = FALSE}
+plot(pressure)
 ```
 
-Compare all four models:
-
-```{r}
-models <- c("rectangular", "nonrectangular", "exponential", "modified")
-res_list <- lapply(models, function(m) {
-  fit_light_response(df, Qin = "Qin", A = "A", model = m)
-})
-names(res_list) <- models
-
-sapply(res_list, function(x) round(x$value, 2))
-```
-
-## Example with `lrc.csv`
-
-```{r}
-df2 <- read.csv(system.file("extdata", "lrc.csv", package = "fitAQ"))
-names(df2)[names(df2) == "Qin"] <- "PARi"
-names(df2)[names(df2) == "A"]   <- "Photo"
-
-fit_rect <- fit_light_response(df2, Qin = "PARi", A = "Photo", model = "rectangular")
-light_points(fit_rect)
-```
-
-## Model formulas
-
-- Rectangular: \( A = \frac{\alpha Q A_m}{\alpha Q + A_m} - R_d \)
-- Non‑rectangular: \( A = \frac{1}{2\theta}\left(\alpha Q + A_m - \sqrt{(\alpha Q + A_m)^2 - 4\alpha\theta A_m Q}\right) - R_d \)
-- Exponential: \( A = A_m \left[1 - \exp(-b(Q - I_c))\right] \)
-- Modified: \( A = \alpha \frac{1-\beta Q}{1+\gamma Q} Q - R_d \)
-
-## License
-
-MIT © Jiedong Zhu
-
-## References
-
-Baly, EC. 1935. 《The kinetics of photosynthesis》. Proceedings of the Royal Society of London Series B (Biological Sciences), 期 117: 218–39.
-Thornley, J H M. 1976. 《Mathematical models in plant physiology》. London: Academic Press.
-Prado, C. H., 和 J. A. P. V. De Moraes. 1997. 《Photosynthetic capacity and specific leaf mass in twenty woody species of Cerrado vegetation under field conditions》. Photosynthetica 33 (1): 103–12.
-ZiPiao, YE. 2010. 《A review on modeling of responses of photosynthesis to light and CO2CO2​》. Chinese Journal of Plant Ecology, 期 06.
+In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
