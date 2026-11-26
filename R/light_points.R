@@ -9,9 +9,15 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' # Simulate a small noise-free light-response curve
+#' Qin <- c(0, 25, 50, 100, 250, 500, 1000, 1500)
+#' A <- (0.05 * Qin * 20) / (0.05 * Qin + 20) - 1
+#' dat <- data.frame(Qin = Qin, A = A)
+#' fit <- fit_light_response(dat, model = "rectangular",
+#'                           control = list(NP = 40, itermax = 60))
+#'
 #' lp <- light_points(fit)
-#' }
+#' lp
 light_points <- function(fit) {
   if (!inherits(fit, "light_response_fit"))
     stop("Object must be of class 'light_response_fit'")

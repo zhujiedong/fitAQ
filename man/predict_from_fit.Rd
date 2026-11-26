@@ -20,6 +20,13 @@ predict_from_fit(fit, n = 100, expand = 1.05)
 从拟合结果生成预测数据
 }
 \examples{
-pred_df <- predict_from_fit(result4)
+# Simulate a small noise-free light-response curve
+Qin <- c(0, 25, 50, 100, 250, 500, 1000, 1500)
+A <- (0.05 * Qin * 20) / (0.05 * Qin + 20) - 1
+dat <- data.frame(Qin = Qin, A = A)
+fit <- fit_light_response(dat, model = "rectangular",
+                          control = list(NP = 40, itermax = 60))
+
+pred_df <- predict_from_fit(fit)
 head(pred_df)
 }

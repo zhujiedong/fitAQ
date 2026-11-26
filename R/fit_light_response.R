@@ -15,7 +15,16 @@
 #' @param control List for DEoptim.
 #' @param ... Additional arguments.
 #' @export
-
+#'
+#' @examples
+#' # Simulate a small noise-free light-response curve
+#' Qin <- c(0, 25, 50, 100, 250, 500, 1000, 1500)
+#' A <- (0.05 * Qin * 20) / (0.05 * Qin + 20) - 1
+#' dat <- data.frame(Qin = Qin, A = A)
+#'
+#' fit <- fit_light_response(dat, model = "rectangular",
+#'                           control = list(NP = 40, itermax = 60))
+#' fit
 fit_light_response <- function(data,
                                Qin = NULL,
                                A = NULL,
@@ -32,6 +41,14 @@ fit_light_response <- function(data,
   model <- match.arg(model)
   type <- match.arg(type)
 
+  if (!is.data.frame(data)) {
+    stop("`data` must be a data frame.")
+  }
+  if (length(sat_frac) != 1 || !is.finite(sat_frac) ||
+    sat_frac <= 0 || sat_frac >= 1) {
+    stop("`sat_frac` must be a single number between 0 and 1.")
+  }
+
   # Determine column names
   if (type == "LI-6800") {
     if (is.null(Qin)) Qin <- "Qin"
@@ -46,26 +63,18 @@ fit_light_response <- function(data,
   }
 
   # Extract numeric vectors
-  Q <- data[[Qin]]
-  A_obs <- data[[A]]
+  Q <- extract_column(data, Qin, "Qin")
+  A_obs <- extract_column(data, A, "A")
   if (anyNA(Q) || anyNA(A_obs)) stop("Missing values not allowed.")
   Q <- as.numeric(Q)
   A_obs <- as.numeric(A_obs)
 
   # Compute low-light coefficients (using the same type and column names)
   low_coefs <- low_light_coefs(data, Qin = Qin, A = A, type = type, n = 5)
-  aqy <- low_coefs$AQY
-  rd <- low_coefs$Rd
 
   cl <- match.call()
 
-  # Dispatch to model-specific fitter
-  fit <- switch(model,
-    rectangular    = fit_rectangular(Q, A_obs, lower, upper, control, ...),
-    nonrectangular = fit_nonrectangular(Q, A_obs, lower, upper, control, ...),
-    exponential    = fit_exponential(Q, A_obs, lower, upper, control, ...),
-    modified       = fit_modified(Q, A_obs, lower, upper, control, ...)
-  )
+  fit <- fit_model(model, Q, A_obs, lower, upper, control, ...)
 
   deriv <- derive_light_points(model, fit$par, Q, A_obs, sat_frac)
 
@@ -79,12 +88,25 @@ fit_light_response <- function(data,
       lcp = deriv$lcp,
       lsp = deriv$lsp,
       pmax = deriv$pmax,
-      aqy = aqy,
-      rd = rd,
+      aqy = low_coefs$AQY,
+      rd = low_coefs$Rd,
       sat_frac = sat_frac,
       data = data.frame(Qin = Q, A = A_obs),
       call = cl
     ),
     class = "light_response_fit"
   )
+}
+
+# Validates and extracts a column, giving a clear error when it is missing.
+extract_column <- function(data, name, arg = deparse(substitute(name))) {
+  col <- tryCatch(
+    data[[name]],
+    error = function(e) NULL
+  )
+  if (is.null(col)) {
+    stop("Column `", name, "` (for `", arg, "`) not found in `data`. ",
+      "Available columns: ", paste(names(data), collapse = ", "))
+  }
+  col
 }

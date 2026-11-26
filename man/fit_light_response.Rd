@@ -44,3 +44,13 @@ If \code{"other"}, user must provide \code{Qin} and \code{A}.}
 \description{
 Fit light response curves using DEoptim
 }
+\examples{
+# Simulate a small noise-free light-response curve
+Qin <- c(0, 25, 50, 100, 250, 500, 1000, 1500)
+A <- (0.05 * Qin * 20) / (0.05 * Qin + 20) - 1
+dat <- data.frame(Qin = Qin, A = A)
+
+fit <- fit_light_response(dat, model = "rectangular",
+                          control = list(NP = 40, itermax = 60))
+fit
+}

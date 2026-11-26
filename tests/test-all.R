@@ -1,7 +1,14 @@
 #!/usr/bin/env Rscript
 
+library(fitAQ)
+library(testit)
 
-tests_dir <- "testit"
+tests_dir <- if (dir.exists("testit")) {
+  "testit"
+} else {
+  file.path("tests", "testit")
+}
+
 test_files <- list.files(tests_dir, pattern = "^test-.*\\.[Rr]$", full.names = TRUE)
 
 if (length(test_files) == 0) {

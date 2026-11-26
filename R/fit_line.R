@@ -7,6 +7,7 @@
 #' @param type Instrument type: "LI-6800", "LI-6400", or "other". Default "LI-6800".
 #' @param min_points Minimum points required.
 #' @return List with AQY, Rd, intercept, n_used, r_squared.
+#' @importFrom stats coef lm uniroot
 #' @export
 low_light_coefs <- function(data,
                             Qin = NULL,
@@ -29,9 +30,13 @@ low_light_coefs <- function(data,
     }
   }
 
+  if (!is.data.frame(data)) {
+    stop("`data` must be a data frame.")
+  }
+
   # Extract and clean
-  Q <- data[[Qin]]
-  A_vals <- data[[A]]
+  Q <- extract_column(data, Qin)
+  A_vals <- extract_column(data, A)
   valid <- !is.na(Q) & !is.na(A_vals)
   Q <- Q[valid]
   A_vals <- A_vals[valid]
