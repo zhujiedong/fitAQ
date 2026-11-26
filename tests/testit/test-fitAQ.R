@@ -88,3 +88,20 @@ if (exists("predict_from_fit")) {
     (nrow(pred_df) > 0)
   })
 }
+
+# ----- 7. Test plot method on all four models -----
+assert("plot method runs without error for all models (base graphics)", {
+  for (m in models) {
+    res <- fit_light_response(df1, type = "LI-6800", model = m,
+                              control = list(trace = FALSE))
+    grDevices::pdf(NULL)
+    plot(res)
+    grDevices::dev.off()
+  }
+  TRUE
+})
+
+# plot respects user-supplied xlim/ylim
+grDevices::pdf(NULL)
+plot(exp_fit, xlim = c(0, 2000), ylim = c(-2, 12), main = "custom")
+grDevices::dev.off()
